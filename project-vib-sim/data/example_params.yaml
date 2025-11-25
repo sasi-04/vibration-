@@ -1,0 +1,65 @@
+# Example parameters for two isolated vibrating systems
+# Model-Based Design Configuration
+
+components:
+  motor1:
+    mass: 50.0  # kg
+    stiffness: 200000.0  # N/m
+    damping: 400.0  # Ns/m
+    name: "Motor A"
+    
+  motor2:
+    mass: 40.0  # kg
+    stiffness: 150000.0  # N/m
+    damping: 350.0  # Ns/m
+    name: "Motor B"
+    
+  frame:
+    mass: 80.0  # kg
+    stiffness: 250000.0  # N/m
+    damping: 600.0  # Ns/m
+    name: "Enclosure Frame"
+
+beam_elements:
+  connection1:
+    area: 0.01  # m²
+    length: 0.5  # m
+    youngs_modulus: 2.0e11  # Pa (steel)
+    density: 7800.0  # kg/m³
+    
+  connection2:
+    area: 0.01  # m²
+    length: 0.5  # m
+    youngs_modulus: 2.1e11  # Pa
+    density: 7800.0  # kg/m³
+
+mounts:
+  mount1:
+    stiffness: 50000.0  # N/m
+    damping: 200.0  # Ns/m
+    location: [0, 2]  # DOF indices
+    
+  mount2:
+    stiffness: 50000.0  # N/m
+    damping: 200.0  # Ns/m
+    location: [1, 2]  # DOF indices
+
+analysis:
+  frequency_range:
+    min: 0.0  # Hz
+    max: 500.0  # Hz
+    points: 1000
+    
+  time_simulation:
+    duration: 5.0  # s
+    time_steps: 2000
+
+optimization:
+  svime:
+    objective: "minimize_peak_frf"
+    adjustable_params: ["mount_stiffness", "mount_damping"]
+    bounds:
+      stiffness: [10000.0, 200000.0]  # N/m
+      damping: [50.0, 2000.0]  # Ns/m
+
+
